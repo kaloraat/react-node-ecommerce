@@ -10,106 +10,95 @@ const isActive = (history, path) => {
         return { color: "#ffffff" };
     }
 };
-
+//User or Admin Dashboard
+const dashboard = (history)=>{
+    if(isAuthenticated()){
+        let auhtor = isAuthenticated().user.role===1?"admin":"user";
+        return(
+            <li className="nav-item">
+                <Link className="nav-link" style  = {isActive(history,`/${auhtor}/dashboard`)} 
+                    to={`/${auhtor}/dashboard`}>
+                    Dashboard
+                </Link>
+            </li>
+      )}
+}
+//Signin and SignUp Menu
+const SignMenu = (history)=>{
+    const inOut = ["SignUp","Signin"];
+    if(!isAuthenticated()){
+       return inOut.map((index,data)=>{
+            return (
+            <li className="nav-item" key={index}>
+                //Use template String here like to={`/${inOut[data]}`}
+                <Link className="nav-link" to={'/${inOut[data]}'} style={isActive(history,'/${inOut[data]}')}>
+                    {inOut[data]}
+                </Link>
+            </li>)
+        })
+    }
+}
+//Signout
+const out = (history)=>{
+    if(isAuthenticated()){
+        return(
+        <li className="nav-item">
+            <span className="nav-link" style={{cursor:"pointer",color:"#fff",padding: "0.89rem 2rem"}}
+                onClick = {()=>signout(()=>history.push("/"))}>
+                SignOut
+            </span>
+        </li>
+    )}
+}
+//Home Button
+const title = (history)=>{
+    return(
+    <li className="nav-item">
+        <Link className="nav-link" to="/" style={isActive(history,"/")}>
+            Home
+        </Link>
+    </li>)
+}
+//Shop
+const shopmenu = (history)=>{
+    return (
+        <li className="nav-item">
+            <Link
+                className="nav-link"
+                style={isActive(history, "/shop")}
+                to="/shop"
+            >
+                Shop
+            </Link>
+       </li>
+    )
+}
+//Cart
+const cart = (history)=>{
+    return (
+        <li className="nav-item">
+            <Link
+                className="nav-link"
+                style={isActive(history, "/cart")}
+                to="/cart"
+            >
+                Cart{" "}
+                <sup>
+                    <small className="cart-badge">{itemTotal()}</small>
+                </sup>
+            </Link>
+       </li>
+    )
+}
 const Menu = ({ history }) => (
     <div>
         <ul className="nav nav-tabs bg-primary">
-            <li className="nav-item">
-                <Link
-                    className="nav-link"
-                    style={isActive(history, "/")}
-                    to="/"
-                >
-                    Home
-                </Link>
-            </li>
-
-            <li className="nav-item">
-                <Link
-                    className="nav-link"
-                    style={isActive(history, "/shop")}
-                    to="/shop"
-                >
-                    Shop
-                </Link>
-            </li>
-
-            <li className="nav-item">
-                <Link
-                    className="nav-link"
-                    style={isActive(history, "/cart")}
-                    to="/cart"
-                >
-                    Cart{" "}
-                    <sup>
-                        <small className="cart-badge">{itemTotal()}</small>
-                    </sup>
-                </Link>
-            </li>
-
-            {isAuthenticated() && isAuthenticated().user.role === 0 && (
-                <li className="nav-item">
-                    <Link
-                        className="nav-link"
-                        style={isActive(history, "/user/dashboard")}
-                        to="/user/dashboard"
-                    >
-                        Dashboard
-                    </Link>
-                </li>
-            )}
-
-            {isAuthenticated() && isAuthenticated().user.role === 1 && (
-                <li className="nav-item">
-                    <Link
-                        className="nav-link"
-                        style={isActive(history, "/admin/dashboard")}
-                        to="/admin/dashboard"
-                    >
-                        Dashboard
-                    </Link>
-                </li>
-            )}
-
-            {!isAuthenticated() && (
-                <Fragment>
-                    <li className="nav-item">
-                        <Link
-                            className="nav-link"
-                            style={isActive(history, "/signin")}
-                            to="/signin"
-                        >
-                            Signin
-                        </Link>
-                    </li>
-
-                    <li className="nav-item">
-                        <Link
-                            className="nav-link"
-                            style={isActive(history, "/signup")}
-                            to="/signup"
-                        >
-                            Signup
-                        </Link>
-                    </li>
-                </Fragment>
-            )}
-
-            {isAuthenticated() && (
-                <li className="nav-item">
-                    <span
-                        className="nav-link"
-                        style={{ cursor: "pointer", color: "#ffffff" }}
-                        onClick={() =>
-                            signout(() => {
-                                history.push("/");
-                            })
-                        }
-                    >
-                        Signout
-                    </span>
-                </li>
-            )}
+            {title(history)}
+            {shopmenu(history)}
+            {cart(histroy)}
+            {dashboard(history)}
+            {SignMenu(history)}
+            {out(history)}
         </ul>
     </div>
 );
