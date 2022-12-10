@@ -7,7 +7,7 @@
     "braintree-web-drop-in-react": "^1.0.7",
     "compression": "^1.7.4",
     "dotenv": "^8.0.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "moment": "^2.24.0",
     "pm2": "^3.5.1",
     "query-string": "^6.5.0",
